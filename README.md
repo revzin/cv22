@@ -21,11 +21,14 @@ The milking robot ('AMS-2.1') we developed has multiple controller PCBs that all
 To avoid dependence on PLC vendors and their often-not-so-great APIs as much as possible custom controller PCBs were planned after we worked out the number and types of I/Os in the robot by drawing up a detailed 7-page electrical wiring diagram with types and models of sensors, actuators and other equipment set. 
 
 ![PLC-like boards developed for the robot](/assets/everything.jpg)
-*PLC-like boards developed for the robot*
+
+*PLC-like boards I've either directly developed or planned and closely reviewed for the milking robot*
 
 After getting all I/Os in a large table we distributed them between the boards grouping them by logical functions and self-sufficiency. I determined the mechanical designs of the boards by modeling the control cabinet in SolidWorks, planning primary I/O placement, 'mezzanine' I/O expansion boards and cable and wire routes.
 
-![Control cabinet model and real-world appearance](/assets/electrocat.png)
+![Control cabinet model and real-world appearance](/assets/cabinet.jpg)
+
+*Control cabinet model and its real-world appearance*
 
 These mechanical designs were imported into Alitum and used to perform layout.
 
@@ -202,9 +205,13 @@ The model in action is seen [here (YT video)](https://youtu.be/mvV3rfTB1-k).
 
 We had a side project which was based on a meduim-size battery-powered wheeled robot. After quickly becoming dissatisfield with off-the-shelf BLDC motor controllers (either with low engineeing quality or complicated 'black box' integration) we decided to develop our own three-phase inverter controller (60V 60A nominal).
 
-I was responsible for providing general specifications of the module, established the primary performance parameters, educated the team on motor control topics (I2t management, high-side MOSFET driving methods, overcurrent protection), was responsible for schematic review and BOM, and coordinated mechanical integration with the mechanical team. I performed PCB layout and coded MCU firmware implementing a cascade-PID controller (current - velocity  - position loops). 
+I was responsible for providing general specifications of the module, established the primary performance parameters, educated the team on motor control topics (I2t management, high-side MOSFET driving methods, overcurrent protection), was responsible for schematic review and BOM, and coordinated mechanical integration with the mechanical team. I performed PCB layout and coded MCU firmware implementing a simple cascade-PID controller (current - velocity  - position loops). 
+
+![DVT stage board](/assets/unidriver.jpg) 
+
+*The model is used to calculate world positions of detected tits*
 
 Due to the dangers associated with the actual three-phase inverter switching (high risk of fiery descrution of either the board or the motor in case of switching sequence violations) I decided to offload the commutation logic to an entry-level Intel (Altera) FPGA cotaining switching BLDC controller I've implemented in Verilog. That controller performed the switching sequence by handling the motor's Hall sensors, followed PWM commands from the MCU, and reacted to fast and slow overcurrent signals from the current sensor. All external signals are syncronized to internal FPGA clocks and digitally debounced. 
 
-Various iterations of our controller successfully drove BLDC motors up to 1 kW.
+Various iterations of our controller successfully drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](youtube.com/watch?v=exd6W7MBLxs).
 

@@ -168,7 +168,7 @@ The milking robot has a pneumatic cylinder-based vertical axis that is controlle
 
 The controller uses data from two pressure sensors and two overlapping position sensors to determine the required force to move the axis into a set position.
 
-The inner force loop adjusts the proportional valve to keep the force at setpoint. The outer position loop adjusts the force setpoint to keep the axis position at setpoint. 
+The inner force loop adjusts the proportional valve to keep the force at setpoint. The outer position loop adjusts the force setpoint to keep the axis position at setpoint. PID scheduling is used: gains are selected based on what direction the axis must go (plant and stiction parameters are significantly different depending on if we're going up or down). 
 
 To compensate for high stiction a 'stuck' state detector was designed that adds a 'knocker' signal to the force setpoint, as if attempting to 'knock' the stuck axis with a small hammer. 
 
@@ -178,9 +178,9 @@ To compensate for high stiction a 'stuck' state detector was designed that adds 
 
 To make informed decisions on the parameters and design of the controller I've coded a Python tool to edit controller constants and view real-time controller paramters and plot them. The primary MCU on the board sends UDP datagrams describing the system state, and the Python tools records them for further plotting and sends paramter values. Each non-editable parameter can be plotted (matplotlib). 
 
-![Tuning UI fragment](/assets/tune.jpg) 
+![Tuning UI fragment](/assets/tuning_ui.jpg) 
 
-*Tuning UI fragment*
+*Tuning UI fragment showing PID controller gains tuning*
 
 ![Position following at work](/assets/pos_follow.jpg) 
 
@@ -214,5 +214,5 @@ I was responsible for providing general specifications of the module, establishe
 
 Due to the dangers associated with the actual three-phase inverter switching (high risk of fiery descrution of either the board or the motor in case of switching sequence violations) I decided to offload the commutation logic to an entry-level Intel (Altera) FPGA cotaining switching BLDC controller I've implemented in Verilog. That controller performed the switching sequence by handling the motor's Hall sensors, followed PWM commands from the MCU, and reacted to fast and slow overcurrent signals from the current sensor. All external signals are syncronized to internal FPGA clocks and digitally debounced. 
 
-Various iterations of our controller successfully drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](youtube.com/watch?v=exd6W7MBLxs).
+Various iterations of our controller successfully drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](https://youtube.com/watch?v=exd6W7MBLxs).
 

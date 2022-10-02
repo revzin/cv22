@@ -54,9 +54,9 @@ The 'Arm' board features an additional STM32F3 that is limited to controlling th
 
 In general due to small series runs and negligible costs of our custom electronics compared to other cost centers of the robot we usually laid out PCBs for maximum EMI resistance, preferring to have more PCB ground planes and lower return current impedances than removing a PCB layer for cost savings.
 
-!['Arm' layer stack and layout](/assets/arm-layout.png)
+!['Arm' layout fragment](/assets/arm_layout.png)
 
-*'Arm' layer stack and layout*
+*'Arm' controller layout fragment, layout by me*
 
 For these boards I have designed the schmatics, did PCB layout for the 'Arm' one, reviewed the team's work on the other one, implemented some of the device drivers in firmware, and implemented the UDP (originally TCP) communications with the host server (FreeRTOS/LwIP).
 
@@ -117,6 +117,7 @@ We needed to collect accelerometer + gyroscope data at around 50 Hz. Additionaly
 I designed the system architecture, circuit diagrams and established PCB component placement for this project. After various considerations and a prototype I decided on a BLE-enabled armband (mainly to check the proximity of the armband to the employee's corporate phone at sparse time intervals) with a contemporary 6DOF MEMS device, a Micron QSPI Flash memory chip sized to hold a shift's worth of movement data (around 150 MByte per shift), an off-the-shelf I2C pulseoximeter sensor, a BLE-enabled STM low-power MCU and finally USB and charging over a custom connector: gold-plated contacts flush with the armband housing of a type found on some smart watches (the armband 'clicks' into place and the USB contacts press against the base station's by magnets when the armband is placed in proximity to the slot on the base station).
 
 ![Prototype armbands charging on the base station](/assets/armband_charging_station.jpg)
+
 *Prototype armbands charging on the base station*
 
 After each shift the armband was to be returned a 16-armband base station which acts as a charger and a movement data access point (someone wishing to read the data will connect to the base station and request data from an armband with a given serial number 'burnt' into each armband during manufacturing). Wireless data transfer and charging were considered but ultimately rejected as they required larger enclosures to house reasonably performing antennae and 'juicer' batteries required to transfer movement data.
@@ -131,13 +132,13 @@ After signing off on the provisional BOM I laid out a draft PCB and based on tha
 
 ![Production armband board in CAD view](/assets/armband_board.png)
 
-*Production armband board in CAD view*
+*Production armband board in CAD view, component placement by me*
 
 The base station board was designed to interface with 16 armbands via a USB multiplexer and with Ethernet connectivity to enable armband data download. Base station was the USB 'host' and the armband was the 'device'. I implemented the base station firmware with FreeRTOS and LwIP, and a Python client interfacing with the base station (shared structures were described with ctypes). A connected client could request the state of each slot (if occupied, the S/N of the armband) on the base station and then download the data from a given slot. We have also fully developed the armband's firmware on the prototype board and tested every aspect of data collection and transmission.
 
 ![DVT base station board](/assets/cs_board.jpg)
 
-*DVT base station board*
+*DVT base station board, layout by me*
 
 The BLE was implemented with an SMT antenna mounted at a relative distance from conductors. Antenna placement and range were verified using small prototype antenna boards with antennas mounted at different proximity to conductors connected in place of a default antenna of a commerical Wi-Fi router (as Wi-Fi uses the same 2.4 GHz ISM band we can check antenna range with a Wi-Fi enabled smartphone, much easier then hacking an antenna to a Bluetooth-enabled device).
 
@@ -209,7 +210,7 @@ I was responsible for providing general specifications of the module, establishe
 
 ![DVT stage board](/assets/unidriver.jpg) 
 
-*The model is used to calculate world positions of detected tits*
+*The latest iteration of the BLDC controller. Schematics and component placement by me. *
 
 Due to the dangers associated with the actual three-phase inverter switching (high risk of fiery descrution of either the board or the motor in case of switching sequence violations) I decided to offload the commutation logic to an entry-level Intel (Altera) FPGA cotaining switching BLDC controller I've implemented in Verilog. That controller performed the switching sequence by handling the motor's Hall sensors, followed PWM commands from the MCU, and reacted to fast and slow overcurrent signals from the current sensor. All external signals are syncronized to internal FPGA clocks and digitally debounced. 
 

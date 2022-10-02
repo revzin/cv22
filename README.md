@@ -210,9 +210,9 @@ I was responsible for providing general specifications of the module, establishe
 
 ![DVT stage board](/assets/unidriver.png) 
 
-*The latest iteration of our in-house BLDC controller. Schematics, firmware architecture and component placement by me. *
+*The latest iteration of our in-house BLDC controller. Schematics, firmware architecture and component placement by me.*
 
 Due to the dangers associated with the actual three-phase inverter switching (high risk of fiery descrution of either the board or the motor in case of switching sequence violations) I decided to offload the commutation logic to an entry-level Intel (Altera) FPGA cotaining switching BLDC controller I've implemented in Verilog. That controller performed the switching sequence by handling the motor's Hall sensors, followed PWM commands from the MCU, and reacted to fast and slow overcurrent signals from the current sensor. All external signals are syncronized to internal FPGA clocks and digitally debounced. 
 
-Various iterations of our controller successfully drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](https://youtube.com/watch?v=exd6W7MBLxs).
+Various iterations of our controller drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](https://youtube.com/watch?v=exd6W7MBLxs).
 

@@ -70,8 +70,8 @@ We've adapted a reference Analog Devices design to four-channel measurment (with
 
 6-layer SMT PCB with ground planes both directly under TOP and BOT layers for EMI reduction.  
 
-![Measurment cell at the bottom of the milk receiver](/assets/cell.png)
-![Housing](/assets/cell-housing.png)
+![Measurment cell at the bottom of the milk receiver](/assets/condmeter_cell.png)
+![Housing](/assets/cell1.jpg)
 
 To compensate thermal changes in conducitivity four 4..20 mA input channels have been added for connection of industry standard temprature sensors.
 

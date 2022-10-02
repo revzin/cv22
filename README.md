@@ -208,9 +208,9 @@ We had a side project which was based on a meduim-size battery-powered wheeled r
 
 I was responsible for providing general specifications of the module, established the primary performance parameters, educated the team on motor control topics (I2t management, high-side MOSFET driving methods, overcurrent protection), was responsible for schematic review and BOM, and coordinated mechanical integration with the mechanical team. I performed PCB layout and coded MCU firmware implementing a simple cascade-PID controller (current - velocity  - position loops). 
 
-![DVT stage board](/assets/unidriver.jpg) 
+![DVT stage board](/assets/unidriver.png) 
 
-*The latest iteration of the BLDC controller. Schematics and component placement by me. *
+*The latest iteration of our in-house BLDC controller. Schematics, firmware architecture and component placement by me. *
 
 Due to the dangers associated with the actual three-phase inverter switching (high risk of fiery descrution of either the board or the motor in case of switching sequence violations) I decided to offload the commutation logic to an entry-level Intel (Altera) FPGA cotaining switching BLDC controller I've implemented in Verilog. That controller performed the switching sequence by handling the motor's Hall sensors, followed PWM commands from the MCU, and reacted to fast and slow overcurrent signals from the current sensor. All external signals are syncronized to internal FPGA clocks and digitally debounced. 
 

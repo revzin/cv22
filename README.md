@@ -82,7 +82,7 @@ We've adapted a reference Analog Devices design to four-channel measurment (with
 
 ![Conductometer PCB in detail](/assets/condmeter.jpg)
 
-*Conductometer PCB in detail*
+*Conductometer PCB in detail, system architecture, schematic by me*
 
 6-layer SMT PCB with ground planes both directly under TOP and BOT layers for EMI reduction.  
 

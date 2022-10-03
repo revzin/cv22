@@ -1,6 +1,6 @@
 # About me
 
-Grisha (Grigory) Revzin, 28 y. o., Israel (oleh hadash), hardware engineer.
+Grisha (Grigory) Revzin, 28 y. o., Israel (oleh hadash), hardware engineer. [LinkedIn](https://www.linkedin.com/in/revzing/)
 
 Cortex-MX MCUs, C, Python, Linux, analog and digital circuit design and PCB layout; Altium Designer & Cadence OrCAD.
 

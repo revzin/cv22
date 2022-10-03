@@ -126,6 +126,7 @@ The armband's components' current consumption was carefully studied. Strict 'pow
 
 After signing off on the provisional BOM I laid out a draft PCB and based on that prepared specifications to a mechanical design subcontractor, providing them with a refernce STEP model of the PCB. We figured out the construction of auxillary PCBs (a flex-PCB LED board on top of the battery and a stub to adjust the placement of the pulseoximeter sensor). The production board was to be an eight-layer double-sided tightly packed board exceeding the domestic manufacturer's capabilities. For the purposes of firmware development we laid out a demo board identical to the production board in circuitry but with extensive testpoints, significantly 'relaxed' assembly and debug connectors.
 
+*Customer logos obscured*
 ![Demo (EVT) armband board](/assets/brc_demo.jpg)
 
 *Demo (EVT) armband board*
@@ -170,6 +171,59 @@ The controller uses data from two pressure sensors and two overlapping position 
 
 The inner force loop adjusts the proportional valve to keep the force at setpoint. The outer position loop adjusts the force setpoint to keep the axis position at setpoint. PID scheduling is used: gains are selected based on what direction the axis must go (plant and stiction parameters are significantly different depending on if we're going up or down). 
 
+```
+void process_update(process *p, process_inputs *i)
+{
+	...
+  /* position PID + pid mux */
+	p->s.vin_pos_error = i->ven_pos_setpoint - p->o.ven_pos_actual;
+	pid_update(&p->s.position_incr, &p->c.pid_param_set[COMCU_PID_POSITION_INCR],
+				p->o.ven_pos_actual, p->s.vin_pos_error, i->ve_dt, p->s.vi_pid_zeroize,
+				p->s.vi_settled);
+	pid_update(&p->s.position_decr, &p->c.pid_param_set[COMCU_PID_POSITION_DECR],
+				p->o.ven_pos_actual, p->s.vin_pos_error, i->ve_dt, p->s.vi_pid_zeroize,
+				p->s.vi_settled);
+	float position_pid_out = 0;
+	if (p->s.vin_pos_error > 0) {
+		position_pid_out = p->s.position_decr.y = p->s.position_incr.y;
+	}
+	else {
+		position_pid_out = p->s.position_incr.y = p->s.position_decr.y;
+
+	}
+	position_pid_out = clamp(-i->ven_force_limit, position_pid_out, i->ven_force_limit);
+
+	/* error monitor */
+	p->s.vi_settled = ermo_update(&p->s.ermo, p->s.vin_pos_error, p->c.c_ermo_switch_val,
+			p->c.c_ermo_settle_time, p->c.c_ermo_unsettle_time, p->o.ve_ticks, p->s.vi_disable,
+			position_pid_out);
+	if (p->s.vi_settled) {
+		position_pid_out = p->s.ermo.pid_averager;
+	}
+  ...
+	/* knocker */
+	int knocker_enable = !p->s.vi_settled && p->o.ve_stopped;
+	float knocker_out = knocker_update(&p->s.knocker, p->s.vin_pos_error, p->o.ve_ticks, knocker_enable,
+										p->c.c_knock_force_incr, p->c.c_knock_force_decr,
+										p->c.c_knock_force_period, p->c.c_knock_force_duration, p->s.vi_disable);
+
+	p->s.vin_force_setpoint = position_pid_out + knocker_out;
+	if (p->c.c_force_sp_ovr) {
+		p->s.vin_force_setpoint = p->c.c_force_sp;
+	}
+	/* force PID */
+	p->s.vin_force_error = p->s.vin_force_setpoint - p->o.ven_force_actual;
+	pid_update(&p->s.force, &p->c.pid_param_set[COMCU_PID_FORCE],
+			   p->o.ven_force_actual, p->s.vin_force_error, i->ve_dt, p->s.vi_pid_zeroize, 0);
+	float current_out = p->c.c_current_flip ? -p->s.force.y : p->s.force.y;
+	current_out = filt_ema_update(&p->s.current_ema, current_out, p->c.c_ema_current_order);
+	float current_upscaled = 12.0 + 8.0 * current_out;
+	...
+}
+```
+
+*Axis controller C implementation fragment (position and force loop update)*
+
 To compensate for high stiction a 'stuck' state detector was designed that adds a 'knocker' signal to the force setpoint, as if attempting to 'knock' the stuck axis with a small hammer. 
 
 ![Stiction compensator at work](/assets/stiction-comp.jpg) 
@@ -213,6 +267,44 @@ I was responsible for providing general specifications of the module, establishe
 *The latest iteration of our in-house BLDC controller. Schematics, firmware architecture and component placement by me.*
 
 Due to the dangers associated with the actual three-phase inverter switching (high risk of fiery descrution of either the board or the motor in case of switching sequence violations) I decided to offload the commutation logic to an entry-level Intel (Altera) FPGA cotaining switching BLDC controller I've implemented in Verilog. That controller performed the switching sequence by handling the motor's Hall sensors, followed PWM commands from the MCU, and reacted to fast and slow overcurrent signals from the current sensor. All external signals are syncronized to internal FPGA clocks and digitally debounced. 
+
+```
+always @(posedge CLK or negedge MOTOR_EN)
+		if (!MOTOR_EN) begin
+			U <= Z;
+			V <= Z;
+			W <= Z;
+			MOTOR_HALL_INVALID <= 1'b0;
+		end else if (motor_ovcu) begin
+			U <= Z;
+			V <= Z;
+			W <= Z;
+			MOTOR_HALL_INVALID <= 1'b0;
+		end else if (BRAKE) begin
+			U = L_REG;
+			V = L_REG;
+			W = L_REG;			
+			MOTOR_HALL_INVALID <= 1'b0;
+		end else case (HALL)
+			3'b001 : begin
+				W <= NH;
+				V <= NL;
+				U <= Z;
+				MOTOR_HALL_INVALID <= 0; end
+			3'b101 : begin
+				U <= NH;
+				V <= NL;
+				W <= Z;
+				MOTOR_HALL_INVALID <= 0; end
+        ...
+			default : begin
+				U <= Z;
+				V <= Z;
+				W <= Z;
+				MOTOR_HALL_INVALID <= 1; end
+		endcase
+```
+*Fragment of Verilog code in the FPGA handling inverter phasing*
 
 Various iterations of our controller drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](https://youtube.com/watch?v=exd6W7MBLxs).
 

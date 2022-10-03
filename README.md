@@ -78,6 +78,10 @@ The voltage and current are measured with a double sample-and-hold (SaH) circuit
 
 *Analog signal conditioning, current*
 
+![Simplified measurment logic waveforms](/assets/cond-cycle.png)
+
+*Simplified measurment contol logic waveforms*
+
 We've adapted a reference Analog Devices design to four-channel measurment (with another group of analog multiplexers enabling successive measurement, reusing the costly signal conditioning stage), an ADC frequently used by our company and an ST microcontroller. The conductometer provides 1 Hz updates with measured resistance values for each channel so the data bandwidth is minimal and therefore isolated CAN is used to deliver updates to the Linux server. 
 
 ![Conductometer PCB in detail](/assets/condmeter.jpg)

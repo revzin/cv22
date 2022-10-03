@@ -127,7 +127,7 @@ The system was used in the milking robot and in the wheeled robot with different
 
 Our company was subcontracted by a third party to develop the data acquisition front-end of an Employee Action Tracking System (EATS). Per the contract we needed to develop the means of acquiring 6-DOF movement data every day over a 9-hours shift using two wearable armbands on an electric company employee's wrists. The recorded data was then to be examined by a third-party neural network classifier that was trained to determine from this 'movement signature' if an employee was deviating from prescribed activities. 
 
-We needed to collect accelerometer + gyroscope data at around 50 Hz. Additionally employee's heart rate was to be recorded occasionally (to check that both bracelets are on the same employee and are actually being worn). The data was to be uploaded to a third-party server once a day after the shift's end and the armbands were not to be a hindrance to employee activities.
+We needed to collect accelerometer + gyroscope data at around 50 Hz. Additionally the employee's heart rate was to be recorded occasionally (to check that both bracelets are on the same employee and are actually being worn). The data was to be uploaded to a third-party server once a day after the shift's end and the armbands were not to be a hindrance to employee activities.
 
 ![System architecture plan fragment showing the armband side](/assets/brc_plan.png)
 

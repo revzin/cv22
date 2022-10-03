@@ -6,6 +6,19 @@ Cortex-MX MCUs, C, Python, Linux, network programming, analog and digital circui
 
 Interested in hardware cost analysis and development scheduling techniques, high-performance embedded systems and real-world EMC, EMI & signal integrity work, and embedded firmware testing and verification.
 
+# ToC
+- [About me](#about-me)
+- [Engineering Projects](#engineering-projects)
+  * [PLC-like controllers](#plc-like-controllers)
+    + ['Arm' and 'Milking' controllers](#arm-and-milking-controllers)
+    + [Conductometer](#conductometer)
+  * [CAN](#can)
+  * [Employee Action Tracking System hardware front-end](#employee-action-tracking-system-hardware-front-end)
+  * [Real-time axis controller](#real-time-axis-controller)
+  * [Robot manipulator model](#robot-manipulator-model)
+  * [BLDC motor controller](#bldc-motor-controller)
+
+
 # Engineering Projects
 
 During my stay at R-SEPT (a startup-style company of 6-8 hardware, software and mechanical engineers) I've served in a dual role of a technical leader and an engineer.
@@ -313,4 +326,6 @@ always @(posedge CLK or negedge MOTOR_EN)
 ```
 *Fragment of Verilog code in the FPGA handling inverter phasing*
 
-Various iterations of our controller drove [BLDC motors up to 1 kW (YT video of our Feed Pusher prototype)](https://youtube.com/watch?v=exd6W7MBLxs).
+[![YT video](/assets/yt_pusher.png)](https://youtube.com/watch?v=exd6W7MBLxs "YT video")
+
+*YT video of our Feed Pusher prototype using the described PCBs*

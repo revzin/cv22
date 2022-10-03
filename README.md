@@ -10,7 +10,9 @@ Interested in hardware cost analysis and development scheduling techniques, high
 
 During my stay at R-SEPT (a startup-style company of 6-8 hardware, software and mechanical engineers) I've served in a dual role of a technical leader and an engineer.
 
-Under my technical leadership we've successfully [field-tested a made-from-scratch milking robot (YT video)](https://youtube.com/watch?v=lFIApEtLz7I) with a diverse range of custom electronics tightly integrated with mechanics and pneumatics. As a leader I've distributed available tasks, reviewed team designs (mechanical, electrical & electronic and software), made decisions on system architecture and planned development and testing from budgeting and scheduling viewpoints.
+[![YT video](/assets/yt_cow.png)](https://www.youtube.com/watch?v=lFIApEtLz7I "YT video")
+
+Under my technical leadership we've successfully [field-tested a made-from-scratch milking robot (YT video)](https://youtube.com/watch?v=) with a diverse range of custom electronics tightly integrated with mechanics and pneumatics. As a leader I've distributed available tasks, reviewed team designs (mechanical, electrical & electronic and software), made decisions on system architecture and planned development and testing from budgeting and scheduling viewpoints.
 
 As an engineer my focus was on the most difficult tasks available, ones that required technical breakthroughs. That engineering role presented diverse engineering challenges some of which are briefly described further down.
 
@@ -244,13 +246,14 @@ To make informed decisions on the parameters and design of the controller I've c
 
 *Position following at work*
 
-[Robot arm movements showing the vertical axis at work (YT video)](https://youtu.be/mvV3rfTB1-k)
+[![YT video](/assets/yt_mvmt.png)](https://youtube.com/watch?v=mvV3rfTB1-k "YT video")
+*Robot arm movement including the vertical axis*
 
 ## Robot manipulator model
 
 Filling in for an absent programmer on a time-critical task I've implemented a geometrical model of the robot's manipulator providing forward and inverse kinematics, synchronization with the 'hardware' robot, collision detection and visualization.
 
-The model in action is seen [here (YT video)](https://youtu.be/mvV3rfTB1-k).
+The model in action is seen in the video above.
 
 ![Model bounding boxes for collision checks](/assets/bbox.jpg) 
 

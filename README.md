@@ -2,7 +2,7 @@
 
 Grisha (Grigory) Revzin, 28 y. o., Israel (oleh hadash), hardware engineer. [LinkedIn](https://www.linkedin.com/in/revzing/)
 
-Cortex-MX MCUs, C, Python, Linux, analog and digital circuit design and PCB layout; Altium Designer & Cadence OrCAD.
+Cortex-MX MCUs, C, Python, Linux, network programming, analog and digital circuit design and PCB layout; Altium Designer & Cadence OrCAD.
 
 Interested in hardware cost analysis and development scheduling techniques, high-performance embedded systems and real-world EMC, EMI & signal integrity work, and embedded firmware testing and verification.
 
